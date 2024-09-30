@@ -4,11 +4,11 @@ class GameOver extends Phaser.Scene {
     }
 
     preload() {
-        this.load.spritesheet('final', 'Public/resources/GameOverV2.png', {
+        this.load.spritesheet('final', 'public/resources/GameOverV2.png', {
             frameWidth: 626,
             frameHeight: 417
         });
-        this.load.audio('gameOver','Public/resources/audio/Derrota.mp3')
+        this.load.audio('gameOver','public/resources/audio/Derrota.mp3')
 
     }
     create() {  
