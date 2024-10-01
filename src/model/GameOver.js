@@ -28,7 +28,7 @@ class GameOver extends Phaser.Scene {
         ecenaFinal.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height); 
         let derrota=this.sound.add('gameOver',{loop:false});
         derrota.play();
-
+        this.add.text(180,450,'Presione (Space) para Reintentar',{fontFamily:'Impact',fontSize:'32px',fill:'#FFFFFF'});
         this.add.text(320,400,'Puntaje :'+ this.puntaje ,{fontFamily:'Impact',fontSize:'32px',fill:'#FFFFFF'});
         this.input.keyboard.on('keydown-SPACE',() =>{
             this.puntaje=0;
