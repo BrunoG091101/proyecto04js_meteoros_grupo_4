@@ -7,7 +7,9 @@ export default class Escena1 extends Phaser.Scene {
         this.textoDePuntaje;
         this.music;
     }
-
+    init(data) {
+        this.puntaje = data.puntaje || 0;
+    }
     preload(){
         this.load.spritesheet('ecenario','public/resources/ecena1.png', {
             frameWidth: 200,
@@ -51,7 +53,7 @@ export default class Escena1 extends Phaser.Scene {
         this.time.addEvent({ delay: 250, callback: this.generarMeteoros, callbackScope: this, loop: true });
         this.physics.add.collider(this.jugador, this.grupoMeteoros, this.gameOver, null, this);
         this.cursors=this.input.keyboard.createCursorKeys();
-        this.textoDePuntaje=this.add.text(50,100,'Puntaje:0',{fontSize:'32px',fill:'fff'});
+        this.textoDePuntaje=this.add.text(50,100,'Puntaje:0',{fontFamily:'Impact',fontSize:'32px',fill:'#FFFFFF'});
        let music= this.sound.add('song1', { loop: false });
        music.play();
        music.on('complete', () => {
@@ -76,6 +78,8 @@ export default class Escena1 extends Phaser.Scene {
         else {
             this.jugador.anims.play('Centro');
         }
+        this.puntaje+=1;
+        this.textoDePuntaje.setText('Puntaje : '+this.puntaje);
     }
 
     generarMeteoros() {
@@ -96,7 +100,7 @@ export default class Escena1 extends Phaser.Scene {
         this.physics.pause(); 
         jugador.setTint(0xff0000); 
         console.log('Game Over');
-        this.scene.start('GameOver'); 
+        this.scene.start('GameOver', {puntaje:this.puntaje}); 
         this.sound.stopAll();
     }    
     
