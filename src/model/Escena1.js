@@ -4,12 +4,35 @@ export default class Escena1 extends Phaser.Scene {
         this.jugador=null;
         this.cursors=null;
         this.putaje=0;
+        this.PuntajeM = 0;
         this.textoDePuntaje;
+        this.textoMonedas = null;
         this.music;
     }
     init(data) {
         this.puntaje = data.puntaje || 0;
     }
+    generarMoneda() {
+        this.anims.create({
+            key: 'moneda',
+            frames: this.anims.generateFrameNumbers('moneda', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        const y = Phaser.Math.Between(0, 800); // Posición aleatoria en el eje X
+        const moneda = this.grupoMoneda.create(800, y, 'moneda'); // Crear una moneda
+        moneda.anims.play('moneda');
+        moneda.setVelocityX(-100);
+    }
+
+    recogerMoneda(jugador, moneda) {
+        this.PuntajeM += 1;
+
+        this.textoMonedas.setText('Monedas: ' + this.PuntajeM);
+        moneda.destroy();
+    }
+
     preload(){
         this.load.spritesheet('ecenario','public/resources/ecena1.png', {
             frameWidth: 200,
@@ -17,7 +40,8 @@ export default class Escena1 extends Phaser.Scene {
         });
         this.load.spritesheet('nave','public/resources/player1.png',{frameWidth:46.6,frameHeight:52});
         this.load.spritesheet('asteroide','public/resources/asteroide.png',{frameWidth:21.5,frameHeight:46});
-        
+        this.load.spritesheet('moneda', 'public/resources/moneda1.png', { frameWidth: 19.75, frameHeight: 22 });
+
         this.load.audio('song1','public/resources/audio/level1.mp3');
     }
     create(){
@@ -50,13 +74,22 @@ export default class Escena1 extends Phaser.Scene {
             frameRate: 10,
         });
         this.grupoMeteoros = this.physics.add.group(); 
+        this.grupoMoneda = this.physics.add.group();
+
         this.time.addEvent({ delay: 250, callback: this.generarMeteoros, callbackScope: this, loop: true });
+        this.time.addEvent({ delay: 1050, callback: this.generarMoneda, callbackScope: this, loop: true });
+
         this.physics.add.collider(this.jugador, this.grupoMeteoros, this.gameOver, null, this);
+        this.physics.add.collider(this.jugador, this.grupoMoneda, this.recogerMoneda, null, this);
+
         this.cursors=this.input.keyboard.createCursorKeys();
+
         this.textoDePuntaje=this.add.text(50,100,'Puntaje:0',{fontFamily:'Impact',fontSize:'32px',fill:'#FFFFFF'});
-       let music= this.sound.add('song1', { loop: false });
-       music.play();
-       music.on('complete', () => {
+        this.textoMonedas = this.add.text(50, 150, 'Monedas: 0', { fontFamily: 'Impact', fontSize: '32px', fill: '#FFFF00' });
+
+        let music= this.sound.add('song1', { loop: false });
+        music.play();
+        music.on('complete', () => {
         this.scene.start('Victoria');
     });
        
@@ -80,6 +113,11 @@ export default class Escena1 extends Phaser.Scene {
         }
         this.puntaje+=1;
         this.textoDePuntaje.setText('Puntaje : '+this.puntaje);
+        
+        if (this.puntaje == 1500) {
+            this.scene.start('Victoria');
+            this.sound.stopAll();
+        }
     }
 
     generarMeteoros() {
