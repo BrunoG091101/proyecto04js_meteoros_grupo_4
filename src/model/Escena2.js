@@ -71,17 +71,17 @@ class Ecena2 extends Phaser.Scene{
             frameWidth: 200,
             frameHeight: 200
         });*/
-        this.load.image('parallax1','Public/resources/imagen1.png');
-        this.load.image('parallax2','Public/resources/imagen2.png');
-        this.load.image('parallax3','Public/resources/imagen3.png');
-        this.load.image('parallax4','Public/resources/imagen4.png');
+        this.load.image('parallax1','public/resources/imagen1.png');
+        this.load.image('parallax2','public/resources/imagen2.png');
+        this.load.image('parallax3','public/resources/imagen3.png');
+        this.load.image('parallax4','public/resources/imagen4.png');
 
 
-        this.load.spritesheet('nave','Public/resources/player1.png',{frameWidth:46.6,frameHeight:52});
-        this.load.spritesheet('asteroide','Public/resources/asteroide.png',{frameWidth:21.5,frameHeight:46});
-        this.load.spritesheet('moneda', 'Public/resources/moneda1.png', { frameWidth: 19.75, frameHeight: 22 });
+        this.load.spritesheet('nave','public/resources/player1.png',{frameWidth:46.6,frameHeight:52});
+        this.load.spritesheet('asteroide','public/resources/asteroide.png',{frameWidth:21.5,frameHeight:46});
+        this.load.spritesheet('moneda', 'public/resources/moneda1.png', { frameWidth: 19.75, frameHeight: 22 });
 
-        this.load.audio('song2','Public/resources/audio/musica.mp3');
+        this.load.audio('song2','public/resources/audio/musica.mp3');
     }
     create(){
         //const fondo=this.add.sprite(0,0, 'ecenario2').setOrigin(0);
