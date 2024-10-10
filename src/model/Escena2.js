@@ -71,10 +71,10 @@ class Ecena2 extends Phaser.Scene{
             frameWidth: 200,
             frameHeight: 200
         });*/
-        this.load.image('parallax1','Public/resources/imagen1.png');
-        this.load.image('parallax2','Public/resources/imagen2.png');
-        this.load.image('parallax3','Public/resources/imagen3.png');
-        this.load.image('parallax4','Public/resources/imagen4.png');
+        this.load.image('parallax1','public/resources/imagen1.png');
+        this.load.image('parallax2','public/resources/imagen2.png');
+        this.load.image('parallax3','public/resources/imagen3.png');
+        this.load.image('parallax4','public/resources/imagen4.png');
 
 
         this.load.spritesheet('nave','Public/resources/player1.png',{frameWidth:46.6,frameHeight:52});
