@@ -11,6 +11,8 @@ class Ecena2 extends Phaser.Scene{
         this.paradax2=null;
         this.paradax3=null;
         this.paradax4=null;
+        this.grupoBalas = null;
+        this.teclaDisparo = null;
     }
     
     init(data) {
@@ -65,6 +67,24 @@ class Ecena2 extends Phaser.Scene{
         this.textoMonedas.setText('Monedas: ' + this.PuntajeM);
         moneda.destroy();
     }
+    shootBullet() {
+        this.anims.create({
+            key: 'moneda',
+            frames: this.anims.generateFrameNumbers('moneda', { start: 0, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        const bala = this.grupoBalas.create(this.jugador.x, this.jugador.y, 'bala'); // Crear una bala
+        bala.setVelocityX(300); 
+        bala.anims.play('bala');
+    }
+
+    destruirEnemigo(bala, enemigo) {
+        bala.destroy(); 
+        enemigo.destroy(); 
+        this.puntaje += 100; 
+        this.textoDePuntaje.setText('Puntaje: ' + this.puntaje);
+    }
 
     preload(){
         /*this.load.spritesheet('ecenario2','Public/resources/fondo2.png', {
@@ -80,6 +100,7 @@ class Ecena2 extends Phaser.Scene{
         this.load.spritesheet('nave','public/resources/player1.png',{frameWidth:46.6,frameHeight:52});
         this.load.spritesheet('asteroide','public/resources/asteroide.png',{frameWidth:21.5,frameHeight:46});
         this.load.spritesheet('moneda', 'public/resources/moneda1.png', { frameWidth: 19.75, frameHeight: 22 });
+        this.load.spritesheet('bala', 'public/resources/bala.png',{frameWidth:49.43,frameHeight:32}); // Cargar la imagen de la bala
 
         this.load.audio('song2','public/resources/audio/musica.mp3');
     }
@@ -132,6 +153,7 @@ class Ecena2 extends Phaser.Scene{
         this.grupoMeteoros = this.physics.add.group(); 
         this.grupoMoneda = this.physics.add.group();
         this.grupoEnemigos= this.physics.add.group();
+        this.grupoBalas = this.physics.add.group(); // Grupo de balas
 
         this.time.addEvent({ delay: 250, callback: this.generarMeteoros, callbackScope: this, loop: true });
         this.time.addEvent({ delay: 1050, callback: this.generarMoneda, callbackScope: this, loop: true });
@@ -140,9 +162,11 @@ class Ecena2 extends Phaser.Scene{
         this.physics.add.collider(this.jugador, this.grupoMeteoros, this.gameOver, null, this);
         this.physics.add.collider(this.jugador, this.grupoMoneda, this.recogerMoneda, null, this);
         this.physics.add.collider(this.jugador, this.grupoEnemigos, this.gameOver, null, this);
+        this.physics.add.collider(this.grupoBalas, this.grupoEnemigos, this.destruirEnemigo, null, this); // Colisión de balas con enemigos
 
         this.cursors=this.input.keyboard.createCursorKeys();
-       
+        this.teclaDisparo = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE); // Barra espaciadora para disparar
+
         this.textoDePuntaje=this.add.text(50,100,'Puntaje:0',{fontFamily:'Impact' ,fontSize:'32px',fill:'#FFFFFF'});
         this.textoMonedas = this.add.text(50, 150, 'Monedas: 0', { fontFamily: 'Impact', fontSize: '32px', fill: '#FFFF00' });
 
@@ -176,6 +200,9 @@ class Ecena2 extends Phaser.Scene{
         this.paradax2.tilePositionX+=1;
         this.paradax3.tilePositionX+=1;
         this.paradax4.tilePositionX+=1;
+        if (Phaser.Input.Keyboard.JustDown(this.teclaDisparo)) {
+            this.shootBullet(); // Disparar una bala
+        }
     }
 
     
