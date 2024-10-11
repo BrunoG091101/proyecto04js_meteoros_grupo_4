@@ -20,10 +20,12 @@ export default class Escena1 extends Phaser.Scene {
             repeat: -1
         });
 
-        const y = Phaser.Math.Between(0, 800); // Posición aleatoria en el eje X
-        const moneda = this.grupoMoneda.create(800, y, 'moneda'); // Crear una moneda
+        const x = Phaser.Math.Between(0, 800); // Posición aleatoria en el eje X
+        const moneda = this.grupoMoneda.create(x, 0, 'moneda'); // Crear una moneda
         moneda.anims.play('moneda');
-        moneda.setVelocityX(-100);
+        moneda.setVelocityY(100);
+
+
     }
 
     recogerMoneda(jugador, moneda) {
@@ -32,6 +34,28 @@ export default class Escena1 extends Phaser.Scene {
         this.textoMonedas.setText('Monedas: ' + this.PuntajeM);
         moneda.destroy();
     }
+
+    generarMeteoros() {
+        this.anims.create({
+            key: 'asteroide',
+            frames: this.anims.generateFrameNumbers('asteroide', { start: 0, end:7 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        
+        const x = Phaser.Math.Between(0, 800); 
+        const meteoro = this.grupoMeteoros.create(x, 0, 'asteroide'); 
+        meteoro.anims.play('asteroide');
+        meteoro.setVelocityY(200); 
+    }
+
+    gameOver(jugador) {
+        this.physics.pause(); 
+        jugador.setTint(0xff0000); 
+        console.log('Game Over');
+        this.scene.start('GameOver', {puntaje:this.puntaje}); 
+        this.sound.stopAll();
+    }  
 
     preload(){
         this.load.spritesheet('ecenario','public/resources/ecena1.png', {
@@ -114,33 +138,13 @@ export default class Escena1 extends Phaser.Scene {
         this.puntaje+=1;
         this.textoDePuntaje.setText('Puntaje : '+this.puntaje);
         
-        if (this.puntaje == 1500) {
+        if (this.puntaje == 150) {
             this.scene.start('Victoria');
             this.sound.stopAll();
         }
     }
 
-    generarMeteoros() {
-        this.anims.create({
-            key: 'asteroide',
-            frames: this.anims.generateFrameNumbers('asteroide', { start: 0, end:7 }),
-            frameRate: 10,
-            repeat: -1
-        });
-        
-        const x = Phaser.Math.Between(0, 800); 
-        const meteoro = this.grupoMeteoros.create(x, 0, 'asteroide'); 
-        meteoro.anims.play('asteroide');
-        meteoro.setVelocityY(200); 
-    }
-
-    gameOver(jugador) {
-        this.physics.pause(); 
-        jugador.setTint(0xff0000); 
-        console.log('Game Over');
-        this.scene.start('GameOver', {puntaje:this.puntaje}); 
-        this.sound.stopAll();
-    }    
+      
     
 
 }
