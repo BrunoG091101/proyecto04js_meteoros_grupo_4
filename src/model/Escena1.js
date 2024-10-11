@@ -138,7 +138,7 @@ export default class Escena1 extends Phaser.Scene {
         this.puntaje+=1;
         this.textoDePuntaje.setText('Puntaje : '+this.puntaje);
         
-        if (this.puntaje == 150) {
+        if (this.puntaje == 1000) {
             this.scene.start('Victoria');
             this.sound.stopAll();
         }
