@@ -26,11 +26,12 @@ class Ecena2 extends Phaser.Scene{
             frameRate: 10,
             repeat: -1
         });
-        
-        const x = Phaser.Math.Between(0, 800); 
-        const meteoro = this.grupoMeteoros.create(x, 0, 'asteroide'); 
+
+        const y = Phaser.Math.Between(0, 800); // Posición aleatoria en el eje X
+        const meteoro = this.grupoMeteoros.create(800, y, 'asteroide'); // Crear un meteorito
         meteoro.anims.play('asteroide');
-        meteoro.setVelocityY(200); 
+        meteoro.setVelocityX(-200); // Velocidad horizontal hacia abajo
+        meteoro.angle = 90;
     }
 
     gameOver(jugador) {
@@ -48,15 +49,15 @@ class Ecena2 extends Phaser.Scene{
             repeat: -1
         });
 
-        const y = Phaser.Math.Between(0, 800); // Posición aleatoria en el eje X
+        const y = Phaser.Math.Between(0, 800); // Posición aleatoria en el eje Y
         const moneda = this.grupoMoneda.create(800, y, 'moneda'); // Crear una moneda
         moneda.anims.play('moneda');
         moneda.setVelocityX(-100);
     }
 
     generarEnemigos(){
-        const y = Phaser.Math.Between(0, 600); // Posición aleatoria en el eje X
-        const enemigo = this.grupoEnemigos.create(800, y, 'Enemigo'); // Crear una moneda
+        const y = Phaser.Math.Between(0, 600); // Posición aleatoria en el eje y
+        const enemigo = this.grupoEnemigos.create(800, y, 'Enemigo'); // Crear una enemigos
         enemigo.setVelocityX(-100);
         enemigo.angle=90;
     }
@@ -134,6 +135,7 @@ class Ecena2 extends Phaser.Scene{
 
        this.jugador=this.physics.add.sprite(300,500,'nave',1);
         this.jugador.setCollideWorldBounds(true);
+        this.jugador.angle =90;
 
         this.anims.create({
             key: 'Izquierda',
@@ -182,14 +184,16 @@ class Ecena2 extends Phaser.Scene{
         this.jugador.setVelocityY(0);
         if(this.cursors.left.isDown){
             this.jugador.setVelocityX(-300);
-            this.jugador.anims.play('Izquierda');
+            
         }else if(this.cursors.right.isDown){
             this.jugador.setVelocityX(300);
-            this.jugador.anims.play('Derecha');
+            
         }else if(this.cursors.up.isDown){
             this.jugador.setVelocityY(-300);
+            this.jugador.anims.play('Izquierda');
         } else if(this.cursors.down.isDown){
             this.jugador.setVelocityY(300);
+            this.jugador.anims.play('Derecha');
         }
         else {
             this.jugador.anims.play('Centro');
